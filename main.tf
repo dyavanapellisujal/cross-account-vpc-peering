@@ -72,8 +72,22 @@ module "peering_grants" {
 
 
 
+resource "aws_route" "requestor_to_acceptor" {
+    
+    route_table_id = module.requestor_account_vpc_module.requestor_route_table_id
+    destination_cidr_block = "192.168.2.0/24"
+    vpc_peering_connection_id = module.peering_grants.vpc_peering_connection_id
 
+  
+}
 
+resource "aws_route" "acceptor_to_requestor" {
+    provider = aws.acceptor-provider
+    route_table_id = module.acceptor_account_vpc_module.acceptor_route_table_id
+    destination_cidr_block = "192.168.1.0/24"
+    vpc_peering_connection_id = module.peering_grants.vpc_peering_connection_id
+  
+}
 
 
 

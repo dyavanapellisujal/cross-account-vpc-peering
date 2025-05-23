@@ -17,3 +17,7 @@ output "acceptor_vpc_arn" {
 
     value = aws_vpc.acceptor_vpc.arn
 }
+
+output "acceptor_route_table_id" {
+  value = aws_route_table.private_route_table.id
+}
