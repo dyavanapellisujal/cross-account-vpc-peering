@@ -1,3 +1,6 @@
+#you need to run this terraform script twice on the first run since this is a two stage terraform script, the first time you run
+#apply command it will give a error that role not found, then re run terraform apply the connection for peering will be accepted.
+
 provider "aws" {
   alias   = "requestor_vpc_creation"
   region  = "us-east-1"
@@ -10,8 +13,8 @@ provider "aws" {
 }
 
 
-# data "aws_iam_role" "vpc-peer-role" {
-#   name = "vpc-peer-role" #replace with your exsiting role name  
+# data "aws_iam_role" "vpc-peer-role" { 
+#   name = "vpc-peer-role" #replace with your exsiting role name  "Use this for scenario if IAM role is already available"
 # }
 
 
@@ -49,10 +52,10 @@ module "requestor_account_vpc_module" {
     depends_on = [ module.IAM_Module , module.acceptor_account_vpc_module  ]
   source = "./modules/account_A"
   providers = {
-    aws = aws.requestor_vpc_creation  # ✅ no quotes
+    aws = aws.requestor_vpc_creation  
   }
 
-  # Module inputs
+
   cidr_block          = "192.168.1.0/24"
   vpc_tag             = "requester-vpc"
   accepter_account_id = module.acceptor_account_vpc_module.peer_account_id
